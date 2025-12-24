@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy New Year 2026 - A Special Gift For You</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sofia&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #ffd700;
+            --gold-light: #fff3a0;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00f2ff;
+            --bg-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #reveal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .magic-box {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, var(--gold), #b8860b);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .magic-box i { font-size: 4rem; color: #000; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 215, 0, 0.7); }
+        }
+
+        .reveal-text {
+            margin-top: 20px;
+            font-family: 'Sofia', cursive;
+            font-size: 1.5rem;
+            color: var(--gold);
+            text-align: center;
+        }
+
+        #main-wrapper {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        header h1 {
+            font-family: 'Sofia', cursive;
+            font-size: 3rem;
+            background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .time-box {
+            background: var(--glass);
+            padding: 8px;
+            border-radius: 10px;
+            min-width: 65px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .time-val { display: block; font-size: 1.3rem; font-weight: bold; color: var(--gold); }
+        .time-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.8; }
+
+        .greeting-card {
+            background: linear-gradient(135deg, rgba(30,30,30,0.9), rgba(10,10,10,0.95));
+            border: 3px solid var(--gold);
+            border-radius: 20px;
+            padding: 25px 15px;
+            margin: 20px 0;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .user-photo-frame {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 15px;
+            border: 4px double var(--gold);
+            border-radius: 50%;
+            overflow: hidden;
+            background: #222;
+        }
+
+        .user-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .ai-message-box {
+            font-size: 1rem;
+            line-height: 1.6;
+            font-style: italic;
+            color: var(--gold-light);
+            margin: 15px 0;
+            min-height: 50px;
+        }
+
+        .ai-action-btn {
+            background: var(--glass);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ai-action-btn:disabled { opacity: 0.5; cursor: wait; }
+
+        .input-section {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--gold);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--gold), #b8860b);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-sticky {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: var(--glass);
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .ad-container { margin: 15px 0; min-height: 50px; background: rgba(255,255,255,0.05); }
+
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--glass);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Custom Modal */
+        #custom-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #222;
+            border: 2px solid var(--gold);
+            padding: 20px;
+            border-radius: 15px;
+            z-index: 4000;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- Magic Reveal -->
+    <div id="reveal-overlay">
+        <div class="magic-box" onclick="revealGreeting()">
+            <i class="fas fa-gift"></i>
+        </div>
+        <div class="reveal-text">Click to Open Your AI Magic Gift!</div>
+    </div>
+
+    <!-- Music Toggle -->
+    <div class="music-toggle" onclick="toggleMusic()">
+        <i id="music-icon" class="fas fa-music"></i>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p id="loading-text" style="margin-top: 15px; color: var(--gold);"></p>
+    </div>
+
+    <!-- Custom Modal -->
+    <div id="custom-modal">
+        <p id="modal-msg" style="margin-bottom: 20px;"></p>
+        <button class="btn-primary" onclick="closeModal()" style="width: auto; padding: 10px 30px;">OK</button>
+    </div>
+
+    <div id="main-wrapper">
+        <!-- ADSTERRA_AD_SLOT -->
+        <div class="ad-container"></div>
+
+        <header>
+            <h1>New Year 2026</h1>
+            <p id="ai-subtitle" style="color: var(--neon-blue); font-weight: bold; font-size: 0.9rem;">✨ Creating magic for you...</p>
+        </header>
+
+        <div class="countdown-container">
+            <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">Days</span></div>
+            <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">Hrs</span></div>
+            <div class="time-box"><span class="time-val" id="mins">00</span><span class="time-label">Mins</span></div>
+            <div class="time-box"><span class="time-val" id="secs">00</span><span class="time-label">Secs</span></div>
+        </div>
+
+        <div class="greeting-card">
+            <div class="user-photo-frame" id="photo-frame">
+                <i class="fas fa-user-circle" style="font-size: 8rem; color: #333;"></i>
+            </div>
+            <h2 id="display-name" style="font-family: 'Sofia', cursive; color: var(--gold);">Happy New Year</h2>
+            
+            <div class="ai-message-box" id="ai-wish-text">
+                Wishing you a year full of sparkling surprises and joy!
+            </div>
+
+            <div id="card-actions">
+                <button class="ai-action-btn" id="tts-btn" onclick="playAIVoice()">
+                    <i class="fas fa-volume-up"></i> ✨ AI Voice Greeting
+                </button>
+                <button class="ai-action-btn" onclick="getAIResolution()">
+                    <i class="fas fa-lightbulb"></i> ✨ 2026 Resolution
+                </button>
+            </div>
+        </div>
+
+        <div class="input-section" id="creator-section">
+            <h3 style="margin-bottom: 15px; color: var(--gold);">Personalize Yours</h3>
+            <input type="text" id="user-name-input" placeholder="Your Name">
+            
+            <button class="ai-action-btn" onclick="generateAIWish()" style="width:100%; margin: 0 0 10px 0; padding: 12px; background: rgba(0,242,255,0.1); border-color: var(--neon-blue); color: var(--neon-blue);">
+                <i class="fas fa-pen-nib"></i> ✨ AI Magic Wish Generator
+            </button>
+
+            <label class="btn-primary" style="display:block; text-align:center;" for="photo-input">
+                <i class="fas fa-camera"></i> Upload Photo
+            </label>
+            <input type="file" id="photo-input" accept="image/*" style="display:none">
+            
+            <button class="btn-primary" onclick="generateMagicLink()">
+                <i class="fas fa-link"></i> Create Viral Link
+            </button>
+        </div>
+
+        <!-- ADSTERRA_AD_SLOT -->
+        <div class="ad-container"></div>
+    </div>
+
+    <a href="#" class="whatsapp-sticky" id="whatsapp-share">
+        <i class="fab fa-whatsapp"></i> Share Magic on WhatsApp
+    </a>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const apiKey = "";
+        const IMBB_API_KEY = "33454335c1c03be3d55064992e08eac5";
+        let isMusicPlaying = false;
+        let currentWish = "";
+        const audio = document.getElementById('bg-music');
+
+        // Fireworks setup
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                this.velocity = { x: (Math.random() - 0.5) * 8, y: (Math.random() - 0.5) * 8 };
+                this.alpha = 1; this.friction = 0.95;
+            }
+            draw() { ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
+            update() { this.velocity.x *= this.friction; this.velocity.y *= this.friction; this.x += this.velocity.x; this.y += this.velocity.y; this.alpha -= 0.01; }
+        }
+
+        function createFirework(x, y) {
+            const colors = [varStyle('--gold'), varStyle('--neon-pink'), varStyle('--neon-blue'), '#ffffff'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            for (let i = 0; i < 30; i++) particles.push(new Particle(x, y, color));
+        }
+
+        function varStyle(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles = particles.filter(p => p.alpha > 0);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (Math.random() < 0.04) createFirework(Math.random() * canvas.width, Math.random() * canvas.height * 0.6);
+            requestAnimationFrame(animate);
+        }
+
+        // Countdown
+        function updateCountdown() {
+            const target = new Date('Jan 1, 2026 00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff <= 0) return;
+            const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('days').innerText = d.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('mins').innerText = m.toString().padStart(2, '0');
+            document.getElementById('secs').innerText = s.toString().padStart(2, '0');
+        }
+
+        // UI Helpers
+        function showLoading(text) { document.getElementById('loading-text').innerText = text; document.getElementById('loading-overlay').style.display = 'flex'; }
+        function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
+        function showModal(msg) { document.getElementById('modal-msg').innerText = msg; document.getElementById('custom-modal').style.display = 'block'; }
+        function closeModal() { document.getElementById('custom-modal').style.display = 'none'; }
+
+        function revealGreeting() {
+            document.getElementById('reveal-overlay').style.transform = 'translateY(-100%)';
+            document.getElementById('main-wrapper').style.opacity = '1';
+            toggleMusic(true);
+        }
+
+        function toggleMusic(force = false) {
+            if (!isMusicPlaying || force) {
+                audio.play().catch(() => {});
+                document.getElementById('music-icon').className = 'fas fa-pause';
+                isMusicPlaying = true;
+            } else {
+                audio.pause();
+                document.getElementById('music-icon').className = 'fas fa-music';
+                isMusicPlaying = false;
+            }
+        }
+
+        // Gemini API Implementation
+        async function callGemini(prompt, isTTS = false, voice = "Kore") {
+            const baseUrl = isTTS 
+                ? "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent"
+                : "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+            
+            const payload = isTTS ? {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { 
+                    responseModalities: ["AUDIO"],
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } }
+                }
+            } : {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: "You are a festive New Year 2026 assistant. Keep responses short, poetic, and professional." }] }
+            };
+
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const res = await fetch(`${baseUrl}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) throw new Error('API Error');
+                    const data = await res.json();
+                    return data;
+                } catch (e) {
+                    await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+                }
+            }
+            throw new Error('Failed after retries');
+        }
+
+        async function generateAIWish() {
+            const name = document.getElementById('user-name-input').value.trim() || "Friend";
+            showLoading("✨ AI is weaving a magic wish for you...");
+            try {
+                const data = await callGemini(`Create a unique, 2-line poetic New Year 2026 wish for someone named ${name}. Include a sparkle or magic theme.`);
+                const text = data.candidates[0].content.parts[0].text;
+                document.getElementById('ai-wish-text').innerText = text;
+                currentWish = text;
+            } catch (e) {
+                showModal("AI is busy celebrating! Try again in a moment.");
+            } finally { hideLoading(); }
+        }
+
+        async function getAIResolution() {
+            const name = document.getElementById('user-name-input').value.trim() || "there";
+            showLoading("✨ Consulting the stars for your 2026 goal...");
+            try {
+                const data = await callGemini(`Give a fun, short, and inspiring New Year resolution tip for 2026 for ${name}.`);
+                showModal("✨ Your 2026 Resolution:\n\n" + data.candidates[0].content.parts[0].text);
+            } catch (e) {
+                showModal("The future is a bit blurry. Try again!");
+            } finally { hideLoading(); }
+        }
+
+        async function playAIVoice() {
+            const text = document.getElementById('ai-wish-text').innerText;
+            const btn = document.getElementById('tts-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ✨ Speaking...';
+            
+            try {
+                const data = await callGemini(`Say cheerfully: ${text}`, true, "Callirrhoe");
+                const pcmData = data.candidates[0].content.parts[0].inlineData.data;
+                const audioBlob = pcmToWav(pcmData, 24000); // Typical Gemini TTS sample rate
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const ttsAudio = new Audio(audioUrl);
+                ttsAudio.play();
+                ttsAudio.onended = () => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-volume-up"></i> ✨ AI Voice Greeting';
+                };
+            } catch (e) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-volume-up"></i> ✨ AI Voice Greeting';
+                showModal("Voice magic failed. Please check connection.");
+            }
+        }
+
+        function pcmToWav(base64Pcm, sampleRate) {
+            const buffer = Uint8Array.from(atob(base64Pcm), c => c.charCodeAt(0)).buffer;
+            const wavHeader = new ArrayBuffer(44);
+            const view = new DataView(wavHeader);
+            const length = buffer.byteLength;
+            view.setUint32(0, 0x52494646, false); view.setUint32(4, 36 + length, true); view.setUint32(8, 0x57415645, false);
+            view.setUint32(12, 0x666d7420, false); view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true);
+            view.setUint32(36, 0x64617461, false); view.setUint32(40, length, true);
+            return new Blob([wavHeader, buffer], { type: 'audio/wav' });
+        }
+
+        // Viral & Image logic
+        document.getElementById('photo-input').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = ev => document.getElementById('photo-frame').innerHTML = `<img src="${ev.target.result}">`;
+            reader.readAsDataURL(file);
+        });
+
+        async function generateMagicLink() {
+            const name = document.getElementById('user-name-input').value.trim();
+            const photoFile = document.getElementById('photo-input').files[0];
+            const wish = document.getElementById('ai-wish-text').innerText;
+
+            if (!name) return showModal("Please enter your name!");
+
+            showLoading("✨ Uploading magic to the cloud...");
+            try {
+                let imgParam = "";
+                if (photoFile) {
+                    const fd = new FormData(); fd.append('image', photoFile);
+                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMBB_API_KEY}`, { method: 'POST', body: fd });
+                    const data = await res.json();
+                    if (data.success) imgParam = `&img=${encodeURIComponent(data.data.url)}`;
+                }
+                const url = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(name)}&msg=${encodeURIComponent(wish)}${imgParam}`;
+                const waMsg = `🎁 *${name}* sent you an AI Magic Gift! 🎁%0A%0A"${wish}"%0A%0AOpen here: ${url}`;
+                document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${waMsg}`;
+                showModal("Link Created! Now tap the WhatsApp button below to share.");
+            } catch (e) { showModal("Upload failed. Try again."); }
+            finally { hideLoading(); }
+        }
+
+        // URL parsing
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('name')) {
+            document.getElementById('display-name').innerText = params.get('name');
+            document.getElementById('ai-wish-text').innerText = params.get('msg') || "Happy New Year 2026!";
+            if (params.get('img')) document.getElementById('photo-frame').innerHTML = `<img src="${decodeURIComponent(params.get('img'))}">`;
+            const waMsg = `🎁 *${params.get('name')}* shared a magic gift!%0A%0ASee it here: ${window.location.href}`;
+            document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${waMsg}`;
+        }
+
+        window.onload = () => { updateCountdown(); setInterval(updateCountdown, 1000); animate(); };
+    </script>
+</body>
+</html>
